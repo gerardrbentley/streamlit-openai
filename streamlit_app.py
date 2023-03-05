@@ -7,14 +7,14 @@ if api_key is None:
     st.stop()
 openai.api_key = api_key
 
-user_key = st.secrets.get("user_key")
-if user_key is None:
-    st.error("No user_key in .streamlit/secrets.toml")
+user_keys = st.secrets.get("user_keys")
+if user_keys is None or not isinstance(user_keys, list):
+    st.error("No user_keys array in .streamlit/secrets.toml")
     st.stop()
 
 query_params = st.experimental_get_query_params()
 query_user_key_values = query_params.get("user_key")
-if not query_user_key_values or user_key not in query_user_key_values:
+if not query_user_key_values or not set(user_keys).intersection(query_user_key_values):
     st.error("Invalid User. Must be Admin with Key to continue")
     st.stop()
 
