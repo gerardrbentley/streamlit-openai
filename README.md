@@ -66,3 +66,17 @@ Raises some helpful notifications on initialization if secrets aren't in order.
 Limitation of all your users sharing the same pass key.
 Pass key can be manually revoked if compromised by changing your streamlit secrets.
 
+### Multi Password Auth
+
+- [Commit Link](https://github.com/gerardrbentley/streamlit-openai/tree/4c2b42a3a04037baa96c306b6b28c60d8c7d0423)
+- Local Run: `git checkout 4c2b42a3a04037baa96c306b6b28c60d8c7d0423`
+
+Requires `api_key` and `user_keys` entries in `.streamlit/secrets.toml`:
+
+```toml
+api_key = "ENTER OPENAI API KEY HERE"
+user_key = ["ENTER_A_PASSWORD_FOR_YOUR_USER_QUERY_PARAMETER", "ANOTHER_ONE"]
+```
+
+Same usage as Simple Password Auth version, except you can enter different passwords (keys, email addresses, etc.) for different users.
+
