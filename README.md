@@ -57,7 +57,7 @@ api_key = "ENTER OPENAI API KEY HERE"
 user_key = "ENTER_A_PASSWORD_FOR_YOUR_USER_QUERY_PARAMETER"
 ```
 
-Visit your app with the `user_key` in the URL query parameters to access the OpenAI API features: [http://localhost:8501/?user_key=ENTER_A_PASSWORD_FOR_YOUR_USER_QUERY_PARAMETER]
+Visit your app with the `user_key` in the URL query parameters to access the OpenAI API features: [http://localhost:8501/?user_key=ENTER_A_PASSWORD_FOR_YOUR_USER_QUERY_PARAMETER]()
 
 User must pass a specified password as a query parameter to access the app.
 
