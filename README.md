@@ -75,7 +75,7 @@ Requires `api_key` and `user_keys` entries in `.streamlit/secrets.toml`:
 
 ```toml
 api_key = "ENTER OPENAI API KEY HERE"
-user_key = ["ENTER_A_PASSWORD_FOR_YOUR_USER_QUERY_PARAMETER", "ANOTHER_ONE"]
+user_keys = ["ENTER_A_PASSWORD_FOR_YOUR_USER_QUERY_PARAMETER", "ANOTHER_ONE"]
 ```
 
 Same usage as Simple Password Auth version, except you can enter different passwords (keys, email addresses, etc.) for different users.
