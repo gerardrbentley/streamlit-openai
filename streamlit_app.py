@@ -3,6 +3,8 @@ import openai
 
 from interactors import ChatGPTRequest, ChatMessage, SYSTEM
 
+st.set_page_config(page_title="Streamlit + OpenAI Apps", page_icon="🕹", initial_sidebar_state="collapsed")
+
 api_key = st.secrets.get("api_key")
 if api_key is None:
     st.error("No api_key in .streamlit/secrets.toml")
