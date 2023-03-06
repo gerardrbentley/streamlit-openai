@@ -3,7 +3,11 @@ import openai
 
 from interactors import ChatGPTRequest, ChatMessage, SYSTEM
 
-st.set_page_config(page_title="Streamlit + OpenAI Apps", page_icon="🕹", initial_sidebar_state="collapsed")
+st.set_page_config(
+    page_title="Streamlit + OpenAI Apps",
+    page_icon="🕹",
+    initial_sidebar_state="collapsed",
+)
 
 api_key = st.secrets.get("api_key")
 if api_key is None:
@@ -15,6 +19,26 @@ user_keys = st.secrets.get("user_keys")
 if user_keys is None or not isinstance(user_keys, list):
     st.error("No user_keys array in .streamlit/secrets.toml")
     st.stop()
+
+with st.expander("What's this?"):
+    st.write(
+        """\
+This is a [Streamlit](https://streamlit.io) 🎈 app that uses the [OpenAI](https://platform.openai.com) API to generate chat responses based on user input.
+
+The app has a sidebar on the left with options for the number of responses, AI temperature, presence penalty, and frequency penalty. These options influence the AI's behavior when generating responses.
+
+To generate AI-based chat responses, you need to enter text in the "ChatGPT input" field and hit the "Submit" button. This text will be used as the start of the conversation, and the AI will generate responses based on it.
+
+The response from the API is then displayed in the app along with the raw response.
+
+The app requires an admin user with a user key provided in the URL to access its features.
+
+If you have an OpenAI API Token you can run this app yourself with the steps in the [github repository](https://github.com/gerardrbentley/streamlit-openai)
+
+Made with ❤️ by [Gerard Bentley](https://gerardbentley.com)
+"""
+    )
+    st.image("media/golang_demo.gif")
 
 query_params = st.experimental_get_query_params()
 query_user_key_values = query_params.get("user_key")
