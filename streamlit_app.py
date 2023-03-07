@@ -35,7 +35,7 @@ authenticated_user: PocketBaseUser = st.session_state.get("user_key")
 if not authenticated_user:
     with st.form("sign_in", clear_on_submit=True):
         st.text_input("Username", key="pocketbase_username")
-        st.text_input("Password",key="pocketbase_password")
+        st.text_input("Password",key="pocketbase_password",type="password")
         st.form_submit_button("Log In", on_click=authenticate_pocketbase)
     st.warning("Not Logged In. Must Sign In to See Results")
 else:
@@ -52,7 +52,7 @@ To generate AI-based chat responses, you need to enter text in the "ChatGPT inpu
 
 The response from the API is then displayed in the app along with the raw response.
 
-The app requires an admin user with a user key provided in the URL to access its features.
+The app requires you to sign in before actually generating any responses..
 
 If you have an OpenAI API Token you can run this app yourself with the steps in the [github repository](https://github.com/gerardrbentley/streamlit-openai)
 
