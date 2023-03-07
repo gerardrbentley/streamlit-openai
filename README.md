@@ -90,8 +90,8 @@ This version requires a username and password maintained in a database to authen
 
 It is built with golang and sqlite and can be deployed on a [fly.io](https://fly.io) VM + volume quite cheaply.
 
-- [Commit Link](https://github.com/gerardrbentley/streamlit-openai/tree/TODO)
-- Local Run: `git checkout TODO`
+- [Commit Link](https://github.com/gerardrbentley/streamlit-openai/tree/4d0cc90898f67774473500e9288638589eada9ca)
+- Local Run: `git checkout 4d0cc90898f67774473500e9288638589eada9ca`
 
 Requires `api_key` and `pocketbase_url` entries in `.streamlit/secrets.toml`:
 
