@@ -1,7 +1,10 @@
+import logging
+
 import streamlit as st
 import openai
 
 from interactors import ChatGPTRequest, ChatMessage, SYSTEM
+from pocketbase import get_authenticated_user, PocketBaseUser
 
 st.set_page_config(
     page_title="Streamlit + OpenAI Apps",
@@ -15,12 +18,28 @@ if api_key is None:
     st.stop()
 openai.api_key = api_key
 
-user_keys = st.secrets.get("user_keys")
-if user_keys is None or not isinstance(user_keys, list):
-    st.error("No user_keys array in .streamlit/secrets.toml")
-    st.stop()
 
 st.header("Streamlit + OpenAI App 🎈🤖")
+
+def authenticate_pocketbase() -> PocketBaseUser:
+    username = st.session_state.get("pocketbase_username")
+    password = st.session_state.get("pocketbase_password")
+    try:
+        user = get_authenticated_user(username, password)
+        st.session_state["user_key"] = user
+    except Exception:
+        logging.exception("Could not authenticate user")
+        st.error("Error Logging In. Try again.")
+
+authenticated_user: PocketBaseUser = st.session_state.get("user_key")
+if not authenticated_user:
+    with st.form("sign_in", clear_on_submit=True):
+        st.text_input("Username", key="pocketbase_username")
+        st.text_input("Password",key="pocketbase_password")
+        st.form_submit_button("Log In", on_click=authenticate_pocketbase)
+    st.warning("Not Logged In. Must Sign In to See Results")
+else:
+    st.subheader(f"Welcome {authenticated_user.name or authenticated_user.username}!")
 
 with st.expander("What's this?"):
     st.write(
@@ -96,24 +115,27 @@ with st.expander("Sample Python Code"):
     st.code(f"""\
 import openai
 
-openai.api_key = load_your_api_key_string_here
+openai.api_key = "load_your_api_key_string_here"
 response = openai.ChatCompletion.create(
 {formatted_kwargs}
-chat_responses = response.get("choices")
 )
+chat_responses = response.get("choices")
 """)
 
-query_params = st.experimental_get_query_params()
-query_user_key_values = query_params.get("user_key")
-if not query_user_key_values or not set(user_keys).intersection(query_user_key_values):
-    st.error("Invalid User. Must be Admin with Key to continue")
+if not authenticated_user:
     st.stop()
 
 if not is_submitted or not chat_input:
     st.warning("Enter text and hit Submit to continue!")
     st.stop()
 
-response = openai.ChatCompletion.create(**request.to_kwargs())
+try:
+    with st.spinner("Generating response"):
+        response = openai.ChatCompletion.create(**request.to_kwargs())
+except Exception:
+    logging.exception("Could not get ChatGPT response")
+    st.error("Could not get response from ChatGPT API")
+    st.stop()
 
 with st.expander("Raw Response"):
     st.write(response)

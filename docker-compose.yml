@@ -1,0 +1,7 @@
+services:
+  user_backend:
+    build: ./user_backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./user_backend/pb_data:/bin/pb_data

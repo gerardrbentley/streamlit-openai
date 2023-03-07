@@ -82,3 +82,68 @@ user_keys = ["ENTER_A_PASSWORD_FOR_YOUR_USER_QUERY_PARAMETER", "ANOTHER_ONE"]
 
 Same usage as Simple Password Auth version, except you can enter different passwords (keys, email addresses, etc.) for different users.
 
+### PocketBase User Auth
+
+This version requires a username and password maintained in a database to authenticate.
+
+[PocketBase](https://pocketbase.io) is a lightweight "backend-as-a-service" library that provides user management and optional configuration for OAuth Providers and email password resets.
+
+It is built with golang and sqlite and can be deployed on a [fly.io](https://fly.io) VM + volume quite cheaply.
+
+- [Commit Link](https://github.com/gerardrbentley/streamlit-openai/tree/TODO)
+- Local Run: `git checkout TODO`
+
+Requires `api_key` and `pocketbase_url` entries in `.streamlit/secrets.toml`:
+
+```toml
+api_key = "ENTER OPENAI API KEY HERE"
+pocketbase_url = "http://localhost:8080"
+```
+
+Run Pocketbase via Docker Locally: `docker-compose up --build`
+
+#### Fly.io Pocketbase setup
+
+[reference](https://github.com/pocketbase/pocketbase/discussions/537)
+
+##### Fly CTL
+
+Follow the installation instructions from [https://fly.io/docs/hands-on/install-flyctl/]():
+
+```sh
+curl -L https://fly.io/install.sh | sh
+
+flyctl auth signup
+
+fly auth login
+```
+
+##### Fly Deploy
+
+```sh
+cd user_backend
+fly launch
+# Follow CLI prompts to set up your app
+# fly.toml created
+flyctl volumes create pb_data --size=1
+```
+
+Add the following `[mounts]` section in `fly.toml` just below the top entries:
+
+```toml file:fly.toml
+app = "YOUR_APP_NAME"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[mounts]
+  destination = "/bin/pb_data"
+  source = "pb_data"
+```
+
+Deploy as needed
+
+```sh
+# from ./user_backend
+fly deploy
+```
