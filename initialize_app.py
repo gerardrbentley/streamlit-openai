@@ -38,7 +38,7 @@ def st_login() -> PocketBaseUser:
                 type="password",
             )
             st.form_submit_button("Log In", on_click=authenticate_pocketbase)
-        st.warning("Not Logged In. Must Sign In to See Results")
+        st.warning("Not Logged In. Must Sign In to Use AI Features")
     else:
         st.subheader(
             f"Welcome {authenticated_user.name or authenticated_user.username}!"

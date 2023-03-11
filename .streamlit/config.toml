@@ -1,0 +1,6 @@
+[server]
+runOnSave = true
+enableStaticServing = true
+
+[browser]
+gatherUsageStats = false

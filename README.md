@@ -4,7 +4,7 @@ Streamlit + OpenAI API Apps for text completion and chat tasks.
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://myopenai.streamlit.app)
 
-![Gif screencast of app](media/golang_demo.gif)
+![Gif screencast of app](static/golang_demo.gif)
 
 ## Local Setup
 

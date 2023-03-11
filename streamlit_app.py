@@ -27,14 +27,14 @@ To generate AI-based chat responses, you need to enter text in the "ChatGPT inpu
 
 The response from the API is then displayed in the app along with the raw response.
 
-The app requires you to sign in before actually generating any responses..
+The app requires you to sign in before actually generating any responses.
 
 If you have an OpenAI API Token you can run this app yourself with the steps in the [github repository](https://github.com/gerardrbentley/streamlit-openai)
 
 Made with ❤️ by [Gerard Bentley](https://gerardbentley.com)
 """
     )
-    st.image("media/golang_demo.gif")
+    st.image("static/golang_demo.gif")
 
 number_of_responses = st.sidebar.slider(
     "Number of Responses per Prompt Submission",

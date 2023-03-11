@@ -1,0 +1,46 @@
+.imessage {
+    display: flex;
+    flex-direction: column;
+}
+
+p.from-me {
+    border-radius: 1.15rem;
+    line-height: 1.25;
+    max-width: 75%;
+    padding: 0.5rem .875rem;
+    position: relative;
+    word-wrap: break-word;
+}
+
+p.from-me::before,
+p.from-me::after {
+    bottom: -0.1rem;
+    content: "";
+    height: 1rem;
+    position: absolute;
+}
+
+p.from-me {
+    align-self: flex-end;
+    text-align: right;
+    background-color: #248bf5;
+    color: #fff;
+}
+
+
+p[class^="from-"] {
+    margin: 0.5rem 0;
+    width: fit-content;
+}
+
+p.from-me~p.from-me {
+    margin: 0.25rem 0 0;
+}
+
+p.from-me~p.from-me:not(:last-child) {
+    margin: 0.25rem 0 0;
+}
+
+p.from-me~p.from-me:last-child {
+    margin-bottom: 0.5rem;
+}
