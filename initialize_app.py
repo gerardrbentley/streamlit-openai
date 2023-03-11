@@ -24,7 +24,7 @@ def authenticate_pocketbase() -> PocketBaseUser:
         st.error("Error Logging In. Try again.")
 
 
-def get_authenticated_user() -> PocketBaseUser:
+def st_login() -> PocketBaseUser:
     authenticated_user: PocketBaseUser = st.session_state.get("user_key")
     if not authenticated_user:
         with st.form("sign_in", clear_on_submit=True):

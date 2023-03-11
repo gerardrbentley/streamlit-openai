@@ -5,14 +5,14 @@ import openai
 
 from interactors import ChatGPTRequest, ChatMessage, SYSTEM
 from pocketbase import get_authenticated_user, PocketBaseUser
-from initialize_app import get_authenticated_user
+from initialize_app import st_login
 
 st.set_page_config(
     page_title="Streamlit + OpenAI Apps",
     page_icon="🕹",
     initial_sidebar_state="collapsed",
 )
-authenticated_user = get_authenticated_user()
+authenticated_user = st_login()
 
 st.header("Streamlit + OpenAI App 🎈🤖")
 
