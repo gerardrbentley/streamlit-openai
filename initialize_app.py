@@ -31,7 +31,6 @@ def get_authenticated_user() -> PocketBaseUser:
             st.text_input(
                 label="Username", 
                 key="pocketbase_username",
-                type="username",
             )
             st.text_input(
                 label="Password", 
