@@ -79,13 +79,25 @@ with st.form("chat_input", True):
     st.text_area("Message to send:", key=CHAT_INPUT)
     st.form_submit_button("Send Chat", on_click=submit_chat)
 
-def prep_download() -> bytes:
-    df = pd.DataFrame(st.session_state[CHAT_HISTORY])
+df = pd.DataFrame(st.session_state[CHAT_HISTORY])
+with st.expander('Raw Chat Data'):
+    st.info("""Copy all entries to excel: 
+
+- Click one cell
+- Select all (`ctrl + a`)
+- Copy (`ctrl + c`)
+- Paste in Excel (`ctrl + v`)
+
+Macs use `cmd` instead of `ctrl` 
+""")
+    st.dataframe(df)
+
+def prep_download(df) -> bytes:
     return df.to_csv().encode('utf-8')
 
 st.download_button(
     label="Download Conversation as CSV",
-    data=prep_download(),
+    data=prep_download(df),
     file_name='chatgpt_conversation.csv',
     mime='text/csv',
     help="This format of tab separated column values is suitable for copying into excel"
