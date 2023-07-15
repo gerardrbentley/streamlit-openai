@@ -1,8 +1,9 @@
+import uuid
 import streamlit as st
 from st_paywall import add_auth
 from simpleaichat import AIChat
 
-CHAT_HISTORY = "chat_history"
+SESSION_ID = "session_id"
 DEFAULT_SYSTEM_PROMPT = "You are a helpful assistant."
 PRIME = "Let me think...\n"
 
@@ -15,27 +16,38 @@ add_auth(required=False)
 
 st.header("Streamlit + OpenAI App 🎈🤖")
 
-# Initialize chat history
-if CHAT_HISTORY not in st.session_state:
-    st.session_state[CHAT_HISTORY] = [
-        {"role": "system", "content": DEFAULT_SYSTEM_PROMPT}
-    ]
 
-def get_system_message() -> str:
-    return st.session_state[CHAT_HISTORY][0]["content"]
+@st.cache_resource
+def get_ai() -> AIChat:
+    ai = AIChat(
+        prime=PRIME,
+        console=False,
+        model="gpt-3.5-turbo",
+    )
+    return ai
+
+
+ai = get_ai()
+# Initialize chat history
+if SESSION_ID not in st.session_state:
+    session_id = uuid.uuid4()
+    st.session_state[SESSION_ID] = session_id
+    ai.new_session(id=session_id)
+else:
+    session_id = st.session_state[SESSION_ID]
+
+ai_session = ai.get_session(session_id)
 
 # Display chat messages from history on app rerun
-for message in st.session_state[CHAT_HISTORY]:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+for message in ai_session.messages:
+    with st.chat_message(message.role):
+        st.markdown(message.content)
 
 # React to user input
 if prompt := st.chat_input("What else...?"):
     # Display user message in chat message container
     with st.chat_message("user"):
         st.markdown(prompt)
-    # Add user message to chat history
-    st.session_state[CHAT_HISTORY].append({"role": "user", "content": prompt})
 
 if prompt is None:
     st.stop()
@@ -44,20 +56,14 @@ if prompt is None:
 with st.chat_message("assistant"):
     message_placeholder = st.empty()
     full_response = ""
-    ai = AIChat(
-        prime=PRIME, 
-        console=False,
-        model= "gpt-3.5-turbo",
+    for chunk in ai.stream(
+        id=session_id,
+        prompt=prompt,
         system=DEFAULT_SYSTEM_PROMPT,
-        messages=st.session_state[CHAT_HISTORY],
-        params={"max_tokens": 300},
-        save_messages=False,
-    )
-    for chunk in ai.stream(prompt=prompt):
+        params={"max_tokens": 150},
+        save_messages=True,
+    ):
         full_response += chunk["delta"]
         # Add a blinking cursor to simulate typing
         message_placeholder.markdown(full_response + "▌")
     message_placeholder.markdown(chunk["response"])
-
-# Add assistant response to chat history
-st.session_state[CHAT_HISTORY].append({"role": "assistant", "content": full_response})
