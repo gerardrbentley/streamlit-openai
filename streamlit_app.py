@@ -73,7 +73,7 @@ with st.chat_message("assistant"):
         id=session_id,
         prompt=prompt,
         system=DEFAULT_SYSTEM_PROMPT,
-        params={"max_tokens": 150},
+        params={"max_tokens": 750},
         save_messages=True,
     ):
         full_response += chunk["delta"]
